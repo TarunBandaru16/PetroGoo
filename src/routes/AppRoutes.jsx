@@ -14,10 +14,13 @@ export default function AppRoutes() {
   const user = authCtx ? authCtx.user : null;
   const location = useLocation();
 
+  // ✅ Add this line to debug
+  console.log("User:", user);
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {/* Public */}
+        {/* Public Routes */}
         <Route path="/" element={<Landing />} />
         <Route
           path="/login"
@@ -36,7 +39,7 @@ export default function AppRoutes() {
           }
         />
 
-        {/* Protected */}
+        {/* Protected Route: Customer Dashboard */}
         {user?.role === "customer" && (
           <Route
             path="/dashboard"
@@ -55,7 +58,6 @@ export default function AppRoutes() {
   );
 }
 
-// Page wrapper for animation
 function PageWrapper({ children }) {
   return (
     <motion.div

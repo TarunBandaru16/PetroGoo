@@ -12,7 +12,7 @@ export default function Register() {
           <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white text-3xl">
             <FaGasPump />
           </div>
-          <h1 className="text-2xl font-bold mt-3">FuelDrop</h1>
+          <h1 className="text-2xl font-bold mt-3">PetroGoo</h1>
           <p className="text-gray-500">Fuel delivery at your doorstep</p>
         </div>
 

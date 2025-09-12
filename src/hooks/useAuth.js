@@ -1,5 +1,7 @@
-// src/hooks/useAuth.js
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  const user = {
+    role: "customer",
+    name: "Sarah Johnson"
+  };
+  return { user };
+}

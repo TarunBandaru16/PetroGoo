@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth fade-in */
+@layer utilities {
+  .animate-fadeIn {
+    @apply opacity-0 animate-[fadeIn_0.4s_ease-in-out_forwards];
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

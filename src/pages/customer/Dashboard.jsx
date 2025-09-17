@@ -1,5 +1,6 @@
 // src/pages/customer/Dashboard.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ Import navigation
 import {
   FaGasPump,
   FaClipboardList,
@@ -12,6 +13,7 @@ import {
 } from "react-icons/fa";
 
 export default function Dashboard() {
+  const navigate = useNavigate(); // ✅ Hook for navigation
   const [rewardPoints] = useState(1250);
   const [pointsToNext] = useState(250);
   const [orderStatus] = useState({
@@ -44,9 +46,15 @@ export default function Dashboard() {
             />
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
-                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile Settings</button>
-                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">Billing</button>
-                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">Logout</button>
+                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  Profile Settings
+                </button>
+                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  Billing
+                </button>
+                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  Logout
+                </button>
               </div>
             )}
           </div>
@@ -60,50 +68,75 @@ export default function Dashboard() {
 
         {/* Action Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Request Fuel Card */}
           <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
             <div className="bg-blue-100 p-2 rounded-full w-max mb-3">
               <FaGasPump className="text-blue-600 w-6 h-6" />
             </div>
             <h3 className="font-semibold">Request Fuel</h3>
-            <p className="text-gray-500 text-sm mb-4">Quick fuel delivery to your location</p>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">Order Now</button>
+            <p className="text-gray-500 text-sm mb-4">
+              Quick fuel delivery to your location
+            </p>
+            <button
+              onClick={() => navigate("/request")} // ✅ Navigate to request page
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+            >
+              Order Now
+            </button>
           </div>
 
+          {/* View Orders */}
           <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
             <div className="bg-gray-100 p-2 rounded-full w-max mb-3">
               <FaClipboardList className="text-gray-600 w-6 h-6" />
             </div>
             <h3 className="font-semibold">View Orders</h3>
-            <p className="text-gray-500 text-sm mb-4">Check your order history and status</p>
-            <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed">View History</button>
+            <p className="text-gray-500 text-sm mb-4">
+              Check your order history and status
+            </p>
+            <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed">
+              View History
+            </button>
           </div>
 
+          {/* Reward Points */}
           <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
             <div className="bg-green-100 p-2 rounded-full w-max mb-3">
               <FaGift className="text-green-600 w-6 h-6" />
             </div>
             <h3 className="font-semibold">Reward Points</h3>
-            <p className="text-gray-500 text-sm mb-4">{rewardPoints.toLocaleString()} points</p>
-            <p className="text-green-500 text-sm">{pointsToNext} points to next reward</p>
+            <p className="text-gray-500 text-sm mb-4">
+              {rewardPoints.toLocaleString()} points
+            </p>
+            <p className="text-green-500 text-sm">
+              {pointsToNext} points to next reward
+            </p>
           </div>
 
+          {/* Support */}
           <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
             <div className="bg-orange-100 p-2 rounded-full w-max mb-3">
               <FaHeadset className="text-orange-600 w-6 h-6" />
             </div>
             <h3 className="font-semibold">Support & Help</h3>
-            <p className="text-gray-500 text-sm mb-4">Get help with your orders</p>
-            <button className="bg-orange-200 text-orange-800 px-4 py-2 rounded hover:bg-orange-300 cursor-pointer">Contact Support</button>
+            <p className="text-gray-500 text-sm mb-4">
+              Get help with your orders
+            </p>
+            <button className="bg-orange-200 text-orange-800 px-4 py-2 rounded hover:bg-orange-300 cursor-pointer">
+              Contact Support
+            </button>
           </div>
         </div>
 
         {/* Main Two-Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Current Order Status (left) */}
+          {/* Current Order Status */}
           <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="font-semibold text-lg">Current Order Status</h2>
-              <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">In Progress</span>
+              <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
+                In Progress
+              </span>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -112,8 +145,12 @@ export default function Dashboard() {
               </div>
               <div>
                 <h3 className="font-semibold">{orderStatus.fuelType}</h3>
-                <p className="text-gray-500 text-sm">Order {orderStatus.orderId}</p>
-                <p className="text-green-600 text-sm">Estimated arrival: {orderStatus.estimatedArrival}</p>
+                <p className="text-gray-500 text-sm">
+                  Order {orderStatus.orderId}
+                </p>
+                <p className="text-green-600 text-sm">
+                  Estimated arrival: {orderStatus.estimatedArrival}
+                </p>
               </div>
             </div>
 
@@ -124,7 +161,9 @@ export default function Dashboard() {
                   <FaCheckCircle />
                 </div>
                 <span className="mt-2 text-sm font-medium">Requested</span>
-                <span className="text-xs text-gray-400">{orderStatus.requestedAt}</span>
+                <span className="text-xs text-gray-400">
+                  {orderStatus.requestedAt}
+                </span>
               </div>
 
               <div className="flex-1 h-1 bg-green-500 mx-2"></div>
@@ -134,7 +173,9 @@ export default function Dashboard() {
                   <FaTruck />
                 </div>
                 <span className="mt-2 text-sm font-medium">On the way</span>
-                <span className="text-xs text-gray-400">{orderStatus.onTheWayAt}</span>
+                <span className="text-xs text-gray-400">
+                  {orderStatus.onTheWayAt}
+                </span>
               </div>
 
               <div className="flex-1 h-1 bg-gray-300 mx-2"></div>
@@ -144,31 +185,45 @@ export default function Dashboard() {
                   <FaCircle />
                 </div>
                 <span className="mt-2 text-sm font-medium">Delivered</span>
-                <span className="text-xs text-gray-400">{orderStatus.deliveredAt}</span>
+                <span className="text-xs text-gray-400">
+                  {orderStatus.deliveredAt}
+                </span>
               </div>
             </div>
 
             <div className="flex space-x-4 mt-6">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">Track Driver</button>
-              <button className="bg-gray-200 text-gray-600 px-4 py-2 rounded hover:bg-gray-300 cursor-pointer">Contact Driver</button>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">
+                Track Driver
+              </button>
+              <button className="bg-gray-200 text-gray-600 px-4 py-2 rounded hover:bg-gray-300 cursor-pointer">
+                Contact Driver
+              </button>
             </div>
           </div>
 
-          {/* Right Column – Rewards and Special Offer */}
+          {/* Rewards + Special Offer */}
           <div className="space-y-6">
             <div className="bg-white p-4 rounded-lg shadow space-y-4">
               <h3 className="font-semibold">Reward Points</h3>
-              <p className="text-2xl font-bold text-green-600">{rewardPoints.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-green-600">
+                {rewardPoints.toLocaleString()}
+              </p>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <div className="flex-1 bg-gray-200 h-2 rounded-full overflow-hidden">
                   <div
                     className="bg-green-500 h-2 rounded-full"
-                    style={{ width: `${(rewardPoints / (rewardPoints + pointsToNext)) * 100}%` }}
+                    style={{
+                      width: `${
+                        (rewardPoints / (rewardPoints + pointsToNext)) * 100
+                      }%`,
+                    }}
                   ></div>
                 </div>
                 <span>{pointsToNext} points to go</span>
               </div>
-              <button className="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 cursor-pointer">View Rewards</button>
+              <button className="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 cursor-pointer">
+                View Rewards
+              </button>
             </div>
 
             <div className="bg-gradient-to-r from-blue-600 to-green-500 text-white p-4 rounded-lg shadow space-y-3">
@@ -177,7 +232,9 @@ export default function Dashboard() {
                 <h3 className="font-semibold">Special Offer</h3>
               </div>
               <p>Earn 2x points on all orders this week! Limited time offer.</p>
-              <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100 cursor-pointer">Learn More</button>
+              <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100 cursor-pointer">
+                Learn More
+              </button>
             </div>
           </div>
         </div>

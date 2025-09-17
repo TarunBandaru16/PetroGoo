@@ -6,6 +6,7 @@ import Landing from "../pages/Landing";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/customer/Dashboard";
+import RequestFuel from "../pages/customer/RequestFuel"; // ✅ Corrected name
 
 import { useAuth } from "../hooks/useAuth";
 
@@ -14,7 +15,6 @@ export default function AppRoutes() {
   const user = authCtx ? authCtx.user : null;
   const location = useLocation();
 
-  // ✅ Add this line to debug
   console.log("User:", user);
 
   return (
@@ -39,16 +39,26 @@ export default function AppRoutes() {
           }
         />
 
-        {/* Protected Route: Customer Dashboard */}
+        {/* Protected Routes for Customer */}
         {user?.role === "customer" && (
-          <Route
-            path="/dashboard"
-            element={
-              <PageWrapper>
-                <Dashboard />
-              </PageWrapper>
-            }
-          />
+          <>
+            <Route
+              path="/dashboard"
+              element={
+                <PageWrapper>
+                  <Dashboard />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="/request"
+              element={
+                <PageWrapper>
+                  <RequestFuel />
+                </PageWrapper>
+              }
+            />
+          </>
         )}
 
         {/* Fallback */}
@@ -64,7 +74,7 @@ function PageWrapper({ children }) {
       initial={{ x: 100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -100, opacity: 0 }}
-      transition={{ duration: 0.2, ease: "easeInOut" }}
+      transition={{ duration: 0.15, ease: "easeInOut" }}
       className="w-full"
     >
       {children}

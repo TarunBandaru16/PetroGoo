@@ -7,14 +7,13 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/customer/Dashboard";
 import RequestFuel from "../pages/customer/RequestFuel";
-import TrackOrder from "../pages/customer/TrackOrder"; // ✅ new import
+import TrackOrder from "../pages/customer/TrackOrder";
+import Rewards from "../pages/customer/Rewards";
+import Support from "../pages/customer/Support";
+import History from "../pages/customer/History"; // ✅ New History page
 
 import { useAuth } from "../hooks/useAuth";
 
-// 🔹 Temporary placeholder pages
-const Orders = () => <div className="p-6">Order History Page</div>;
-const Support = () => <div className="p-6">Support Page</div>;
-const Rewards = () => <div className="p-6">Rewards Page</div>;
 const Offers = () => <div className="p-6">Special Offers Page</div>;
 
 export default function AppRoutes() {
@@ -22,12 +21,10 @@ export default function AppRoutes() {
   const user = authCtx ? authCtx.user : null;
   const location = useLocation();
 
-  console.log("User:", user);
-
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {/* Public Routes */}
+        {/* Public */}
         <Route path="/" element={<Landing />} />
         <Route
           path="/login"
@@ -46,7 +43,7 @@ export default function AppRoutes() {
           }
         />
 
-        {/* Protected Routes for Customer */}
+        {/* Protected */}
         {user?.role === "customer" && (
           <>
             <Route
@@ -66,10 +63,10 @@ export default function AppRoutes() {
               }
             />
             <Route
-              path="/orders"
+              path="/history"
               element={
                 <PageWrapper>
-                  <Orders />
+                  <History /> {/* ✅ real History page */}
                 </PageWrapper>
               }
             />
@@ -97,7 +94,6 @@ export default function AppRoutes() {
                 </PageWrapper>
               }
             />
-            {/* ✅ Track Order page */}
             <Route
               path="/track"
               element={

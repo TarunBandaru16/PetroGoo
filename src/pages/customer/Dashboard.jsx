@@ -1,6 +1,6 @@
 // src/pages/customer/Dashboard.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import navigation
+import { useNavigate } from "react-router-dom";
 import {
   FaGasPump,
   FaClipboardList,
@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 
 export default function Dashboard() {
-  const navigate = useNavigate(); // ✅ Hook for navigation
+  const navigate = useNavigate();
   const [rewardPoints] = useState(1250);
   const [pointsToNext] = useState(250);
   const [orderStatus] = useState({
@@ -78,7 +78,7 @@ export default function Dashboard() {
               Quick fuel delivery to your location
             </p>
             <button
-              onClick={() => navigate("/request")} // ✅ Navigate to request page
+              onClick={() => navigate("/request")}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
             >
               Order Now
@@ -94,7 +94,10 @@ export default function Dashboard() {
             <p className="text-gray-500 text-sm mb-4">
               Check your order history and status
             </p>
-            <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed">
+            <button
+              onClick={() => navigate("/orders")}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 cursor-pointer"
+            >
               View History
             </button>
           </div>
@@ -122,7 +125,10 @@ export default function Dashboard() {
             <p className="text-gray-500 text-sm mb-4">
               Get help with your orders
             </p>
-            <button className="bg-orange-200 text-orange-800 px-4 py-2 rounded hover:bg-orange-300 cursor-pointer">
+            <button
+              onClick={() => navigate("/support")}
+              className="bg-orange-200 text-orange-800 px-4 py-2 rounded hover:bg-orange-300 cursor-pointer"
+            >
               Contact Support
             </button>
           </div>
@@ -191,11 +197,18 @@ export default function Dashboard() {
               </div>
             </div>
 
+            {/* ✅ Updated buttons go to /track (TrackOrder page) */}
             <div className="flex space-x-4 mt-6">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">
-                Track Driver
+              <button
+                onClick={() => navigate("/track")}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+              >
+                Track Order
               </button>
-              <button className="bg-gray-200 text-gray-600 px-4 py-2 rounded hover:bg-gray-300 cursor-pointer">
+              <button
+                onClick={() => navigate("/track")}
+                className="bg-gray-200 text-gray-600 px-4 py-2 rounded hover:bg-gray-300 cursor-pointer"
+              >
                 Contact Driver
               </button>
             </div>
@@ -221,7 +234,10 @@ export default function Dashboard() {
                 </div>
                 <span>{pointsToNext} points to go</span>
               </div>
-              <button className="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 cursor-pointer">
+              <button
+                onClick={() => navigate("/rewards")}
+                className="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 cursor-pointer"
+              >
                 View Rewards
               </button>
             </div>
@@ -232,7 +248,10 @@ export default function Dashboard() {
                 <h3 className="font-semibold">Special Offer</h3>
               </div>
               <p>Earn 2x points on all orders this week! Limited time offer.</p>
-              <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100 cursor-pointer">
+              <button
+                onClick={() => navigate("/offers")}
+                className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100 cursor-pointer"
+              >
                 Learn More
               </button>
             </div>

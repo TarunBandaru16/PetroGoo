@@ -6,9 +6,16 @@ import Landing from "../pages/Landing";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/customer/Dashboard";
-import RequestFuel from "../pages/customer/RequestFuel"; // ✅ Corrected name
+import RequestFuel from "../pages/customer/RequestFuel";
+import TrackOrder from "../pages/customer/TrackOrder"; // ✅ new import
 
 import { useAuth } from "../hooks/useAuth";
+
+// 🔹 Temporary placeholder pages
+const Orders = () => <div className="p-6">Order History Page</div>;
+const Support = () => <div className="p-6">Support Page</div>;
+const Rewards = () => <div className="p-6">Rewards Page</div>;
+const Offers = () => <div className="p-6">Special Offers Page</div>;
 
 export default function AppRoutes() {
   const authCtx = useAuth();
@@ -55,6 +62,47 @@ export default function AppRoutes() {
               element={
                 <PageWrapper>
                   <RequestFuel />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <PageWrapper>
+                  <Orders />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="/support"
+              element={
+                <PageWrapper>
+                  <Support />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="/rewards"
+              element={
+                <PageWrapper>
+                  <Rewards />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="/offers"
+              element={
+                <PageWrapper>
+                  <Offers />
+                </PageWrapper>
+              }
+            />
+            {/* ✅ Track Order page */}
+            <Route
+              path="/track"
+              element={
+                <PageWrapper>
+                  <TrackOrder />
                 </PageWrapper>
               }
             />

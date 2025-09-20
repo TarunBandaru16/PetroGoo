@@ -10,7 +10,8 @@ import RequestFuel from "../pages/customer/RequestFuel";
 import TrackOrder from "../pages/customer/TrackOrder";
 import Rewards from "../pages/customer/Rewards";
 import Support from "../pages/customer/Support";
-import History from "../pages/customer/History"; // ✅ New History page
+import History from "../pages/customer/History"; 
+import Profile from "../pages/customer/Profile"; // ✅ New Profile page
 
 import { useAuth } from "../hooks/useAuth";
 
@@ -66,7 +67,7 @@ export default function AppRoutes() {
               path="/history"
               element={
                 <PageWrapper>
-                  <History /> {/* ✅ real History page */}
+                  <History />
                 </PageWrapper>
               }
             />
@@ -99,6 +100,14 @@ export default function AppRoutes() {
               element={
                 <PageWrapper>
                   <TrackOrder />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PageWrapper>
+                  <Profile /> {/* ✅ Profile page */}
                 </PageWrapper>
               }
             />

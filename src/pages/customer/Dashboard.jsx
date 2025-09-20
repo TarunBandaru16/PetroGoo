@@ -1,5 +1,5 @@
 // src/pages/customer/Dashboard.jsx
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaGasPump,
@@ -26,33 +26,58 @@ export default function Dashboard() {
     deliveredAt: "3:55 PM",
   });
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef();
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+    setDropdownOpen(false);
+  };
+
+  const handleLogoutClick = () => {
+    navigate("/");
+    setDropdownOpen(false);
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen]);
 
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
-      <nav className="bg-white shadow-md p-4 flex justify-between items-center">
+      <nav className="bg-white shadow-md px-6 py-3 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <FaGasPump className="text-blue-600 text-2xl" />
           <span className="font-bold text-xl">PetroGoo</span>
         </div>
-        <div className="flex items-center space-x-4 relative">
+        <div className="flex items-center space-x-4 relative" ref={dropdownRef}>
           <FaBell className="text-gray-600 text-xl cursor-pointer" />
           <div className="relative">
             <img
               src="https://via.placeholder.com/40"
               alt="Profile"
-              className="w-10 h-10 rounded-full cursor-pointer"
+              className="w-10 h-10 rounded-full cursor-pointer border"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             />
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
-                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50 border">
+                <button
+                  onClick={handleProfileClick}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
                   Profile Settings
                 </button>
-                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Billing
-                </button>
-                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <button
+                  onClick={handleLogoutClick}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
                   Logout
                 </button>
               </div>
@@ -62,80 +87,63 @@ export default function Dashboard() {
       </nav>
 
       {/* Main Content */}
-      <div className="p-6 space-y-6 max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold">Welcome back, Sarah Johnson</h1>
+      <div className="p-6 space-y-6 max-w-6xl mx-auto">
+        <h1 className="text-2xl font-bold">Welcome back, Sarah Johnson 👋</h1>
         <p className="text-gray-600">Here’s your fuel status today.</p>
 
         {/* Action Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Request Fuel */}
-          <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
-            <div className="bg-blue-100 p-2 rounded-full w-max mb-3">
-              <FaGasPump className="text-blue-600 w-6 h-6" />
-            </div>
-            <h3 className="font-semibold">Request Fuel</h3>
-            <p className="text-gray-500 text-sm mb-4">
-              Quick fuel delivery to your location
-            </p>
-            <button
-              onClick={() => navigate("/request")}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+          {[
+            {
+              icon: <FaGasPump className="text-blue-600 w-6 h-6" />,
+              title: "Request Fuel",
+              desc: "Quick fuel delivery to your location",
+              btn: "Order Now",
+              onClick: () => navigate("/request"),
+              bg: "bg-blue-600 text-white hover:bg-blue-700",
+            },
+            {
+              icon: <FaClipboardList className="text-gray-600 w-6 h-6" />,
+              title: "View Orders",
+              desc: "Check your order history and status",
+              btn: "View History",
+              onClick: () => navigate("/history"),
+              bg: "bg-gray-200 text-gray-700 hover:bg-gray-300",
+            },
+            {
+              icon: <FaGift className="text-green-600 w-6 h-6" />,
+              title: "Reward Points",
+              desc: `${rewardPoints.toLocaleString()} points • ${pointsToNext} to next reward`,
+              btn: "View Rewards",
+              onClick: () => navigate("/rewards"),
+              bg: "bg-green-100 text-green-700 hover:bg-green-200",
+            },
+            {
+              icon: <FaHeadset className="text-orange-600 w-6 h-6" />,
+              title: "Support & Help",
+              desc: "Get help with your orders",
+              btn: "Contact Support",
+              onClick: () => navigate("/support"),
+              bg: "bg-orange-200 text-orange-800 hover:bg-orange-300",
+            },
+          ].map((card, i) => (
+            <div
+              key={i}
+              className="bg-white p-5 rounded-lg shadow hover:shadow-md transition flex flex-col justify-between"
             >
-              Order Now
-            </button>
-          </div>
-
-          {/* Orders / History */}
-          <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
-            <div className="bg-gray-100 p-2 rounded-full w-max mb-3">
-              <FaClipboardList className="text-gray-600 w-6 h-6" />
+              <div className="bg-gray-100 p-2 rounded-full w-max mb-3">
+                {card.icon}
+              </div>
+              <h3 className="font-semibold">{card.title}</h3>
+              <p className="text-gray-500 text-sm mb-4">{card.desc}</p>
+              <button
+                onClick={card.onClick}
+                className={`${card.bg} px-4 py-2 rounded cursor-pointer text-sm font-medium`}
+              >
+                {card.btn}
+              </button>
             </div>
-            <h3 className="font-semibold">View Orders</h3>
-            <p className="text-gray-500 text-sm mb-4">
-              Check your order history and status
-            </p>
-            <button
-              onClick={() => navigate("/history")}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 cursor-pointer"
-            >
-              View History
-            </button>
-          </div>
-
-          {/* Rewards */}
-          <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
-            <div className="bg-green-100 p-2 rounded-full w-max mb-3">
-              <FaGift className="text-green-600 w-6 h-6" />
-            </div>
-            <h3 className="font-semibold">Reward Points</h3>
-            <p className="text-gray-500 text-sm mb-4">
-              {rewardPoints.toLocaleString()} points •{" "}
-              <span className="text-green-600">{pointsToNext} to next reward</span>
-            </p>
-            <button
-              onClick={() => navigate("/rewards")}
-              className="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 cursor-pointer"
-            >
-              View Rewards
-            </button>
-          </div>
-
-          {/* Support */}
-          <div className="bg-white p-5 rounded-lg shadow hover:shadow-md transition">
-            <div className="bg-orange-100 p-2 rounded-full w-max mb-3">
-              <FaHeadset className="text-orange-600 w-6 h-6" />
-            </div>
-            <h3 className="font-semibold">Support & Help</h3>
-            <p className="text-gray-500 text-sm mb-4">
-              Get help with your orders
-            </p>
-            <button
-              onClick={() => navigate("/support")}
-              className="bg-orange-200 text-orange-800 px-4 py-2 rounded hover:bg-orange-300 cursor-pointer"
-            >
-              Contact Support
-            </button>
-          </div>
+          ))}
         </div>
 
         {/* Current Order */}
@@ -153,9 +161,7 @@ export default function Dashboard() {
             </div>
             <div>
               <h3 className="font-semibold">{orderStatus.fuelType}</h3>
-              <p className="text-gray-500 text-sm">
-                Order {orderStatus.orderId}
-              </p>
+              <p className="text-gray-500 text-sm">Order {orderStatus.orderId}</p>
               <p className="text-green-600 text-sm">
                 Estimated arrival: {orderStatus.estimatedArrival}
               </p>
@@ -163,8 +169,11 @@ export default function Dashboard() {
           </div>
 
           {/* Steps */}
-          <div className="flex items-center justify-between mt-6">
-            <div className="flex flex-col items-center text-center">
+          <div className="flex items-center justify-between mt-6 relative">
+            {/* Line (centered) */}
+            <div className="absolute top-4 left-0 w-full h-1 bg-gray-300 z-0"></div>
+
+            <div className="flex flex-col items-center text-center z-10">
               <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center">
                 <FaCheckCircle />
               </div>
@@ -174,9 +183,7 @@ export default function Dashboard() {
               </span>
             </div>
 
-            <div className="flex-1 h-1 bg-green-500 mx-2"></div>
-
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center z-10">
               <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center">
                 <FaTruck />
               </div>
@@ -186,9 +193,7 @@ export default function Dashboard() {
               </span>
             </div>
 
-            <div className="flex-1 h-1 bg-gray-300 mx-2"></div>
-
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center z-10">
               <div className="w-8 h-8 bg-gray-300 text-white rounded-full flex items-center justify-center">
                 <FaCircle />
               </div>

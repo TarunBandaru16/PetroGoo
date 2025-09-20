@@ -1,5 +1,5 @@
 // src/pages/customer/Dashboard.jsx
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaGasPump,
@@ -11,8 +11,10 @@ import {
   FaCircle,
   FaBell,
 } from "react-icons/fa";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Dashboard() {
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [rewardPoints] = useState(1250);
   const [pointsToNext] = useState(250);
@@ -34,6 +36,7 @@ export default function Dashboard() {
   };
 
   const handleLogoutClick = () => {
+    logout();
     navigate("/");
     setDropdownOpen(false);
   };
@@ -88,7 +91,9 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <div className="p-6 space-y-6 max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold">Welcome back, Sarah Johnson 👋</h1>
+        <h1 className="text-2xl font-bold">
+          Welcome back, {user?.name} 👋
+        </h1>
         <p className="text-gray-600">Here’s your fuel status today.</p>
 
         {/* Action Cards */}
@@ -170,7 +175,6 @@ export default function Dashboard() {
 
           {/* Steps */}
           <div className="flex items-center justify-between mt-6 relative">
-            {/* Line (centered) */}
             <div className="absolute top-4 left-0 w-full h-1 bg-gray-300 z-0"></div>
 
             <div className="flex flex-col items-center text-center z-10">
@@ -178,9 +182,7 @@ export default function Dashboard() {
                 <FaCheckCircle />
               </div>
               <span className="mt-2 text-sm font-medium">Requested</span>
-              <span className="text-xs text-gray-400">
-                {orderStatus.requestedAt}
-              </span>
+              <span className="text-xs text-gray-400">{orderStatus.requestedAt}</span>
             </div>
 
             <div className="flex flex-col items-center text-center z-10">
@@ -188,9 +190,7 @@ export default function Dashboard() {
                 <FaTruck />
               </div>
               <span className="mt-2 text-sm font-medium">On the way</span>
-              <span className="text-xs text-gray-400">
-                {orderStatus.onTheWayAt}
-              </span>
+              <span className="text-xs text-gray-400">{orderStatus.onTheWayAt}</span>
             </div>
 
             <div className="flex flex-col items-center text-center z-10">
@@ -198,9 +198,7 @@ export default function Dashboard() {
                 <FaCircle />
               </div>
               <span className="mt-2 text-sm font-medium">Delivered</span>
-              <span className="text-xs text-gray-400">
-                {orderStatus.deliveredAt}
-              </span>
+              <span className="text-xs text-gray-400">{orderStatus.deliveredAt}</span>
             </div>
           </div>
 

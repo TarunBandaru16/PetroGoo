@@ -1,5 +1,5 @@
 // src/pages/customer/Profile.jsx
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaUser,
@@ -7,10 +7,19 @@ import {
   FaBell,
   FaSignOutAlt,
   FaCreditCard,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Profile() {
+  const { user, updateUser, logout } = useContext(AuthContext);
   const [activeModal, setActiveModal] = useState(null);
+  const [showPassword, setShowPassword] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
   const modalRef = useRef();
   const navigate = useNavigate();
 
@@ -25,11 +34,19 @@ export default function Profile() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [activeModal]);
 
-  // Logout handler
   const handleLogout = () => {
-    // Clear any auth tokens here if needed (localStorage/sessionStorage)
-    // localStorage.removeItem("token");
-    navigate("/"); // Redirect to main page
+    logout();
+    navigate("/");
+  };
+
+  const handleProfileSave = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    updateUser({
+      name: formData.get("name"),
+      email: formData.get("email"),
+    });
+    setActiveModal(null);
   };
 
   return (
@@ -43,8 +60,8 @@ export default function Profile() {
             className="w-24 h-24 rounded-full border"
           />
           <div>
-            <h2 className="text-2xl font-bold">Sarah Johnson</h2>
-            <p className="text-gray-600">sarah.johnson@example.com</p>
+            <h2 className="text-2xl font-bold">{user?.name}</h2>
+            <p className="text-gray-600">{user?.email}</p>
           </div>
         </div>
 
@@ -92,21 +109,33 @@ export default function Profile() {
 
             {activeModal === "Change Password" && (
               <form className="space-y-4">
-                <input
-                  type="password"
-                  placeholder="Current Password"
-                  className="w-full p-3 border rounded-lg"
-                />
-                <input
-                  type="password"
-                  placeholder="New Password"
-                  className="w-full p-3 border rounded-lg"
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm New Password"
-                  className="w-full p-3 border rounded-lg"
-                />
+                {["Current Password", "New Password", "Confirm New Password"].map(
+                  (label, i) => {
+                    const field = ["current", "new", "confirm"][i];
+                    return (
+                      <div key={field} className="relative">
+                        <input
+                          type={showPassword[field] ? "text" : "password"}
+                          placeholder={label}
+                          className="w-full p-3 border rounded-lg pr-10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowPassword((prev) => ({
+                              ...prev,
+                              [field]: !prev[field],
+                            }))
+                          }
+                          className="absolute right-3 top-3 text-gray-500"
+                        >
+                          {/* Corrected icon logic */}
+                          {showPassword[field] ? <FaEye /> : <FaEyeSlash />}
+                        </button>
+                      </div>
+                    );
+                  }
+                )}
                 <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
                   Update Password
                 </button>
@@ -126,20 +155,25 @@ export default function Profile() {
             )}
 
             {activeModal === "Edit Profile" && (
-              <form className="space-y-4">
+              <form onSubmit={handleProfileSave} className="space-y-4">
                 <input
                   type="text"
+                  name="name"
                   placeholder="Full Name"
                   className="w-full p-3 border rounded-lg"
-                  defaultValue="Sarah Johnson"
+                  defaultValue={user?.name}
                 />
                 <input
                   type="email"
+                  name="email"
                   placeholder="Email"
                   className="w-full p-3 border rounded-lg"
-                  defaultValue="sarah.johnson@example.com"
+                  defaultValue={user?.email}
                 />
-                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
                   Save Changes
                 </button>
               </form>

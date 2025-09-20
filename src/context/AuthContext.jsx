@@ -5,6 +5,7 @@ export const AuthContext = createContext({
   user: null,
   login: () => {},
   logout: () => {},
+  updateUser: () => {},
 });
 
 export const AuthProvider = ({ children }) => {
@@ -21,7 +22,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userObj) => {
-    // userObj example: { id: 1, name: "Tarun", role: "customer" }
     setUser(userObj);
     localStorage.setItem("petrogoo_user", JSON.stringify(userObj));
   };
@@ -31,8 +31,14 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("petrogoo_user");
   };
 
+  const updateUser = (updates) => {
+    const updated = { ...user, ...updates };
+    setUser(updated);
+    localStorage.setItem("petrogoo_user", JSON.stringify(updated));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

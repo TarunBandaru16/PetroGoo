@@ -1,44 +1,84 @@
+// src/pages/Landing.jsx
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGasPump } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaGasPump,
+} from "react-icons/fa";
 
 export default function Landing() {
+  const [modalContent, setModalContent] = useState(null);
+
+  const openModal = (title, text) => {
+    setModalContent({ title, text });
+  };
+
+  const closeModal = () => {
+    setModalContent(null);
+  };
+
   return (
     <div className="flex flex-col">
+      {/* Website Name Heading */}
+      <header className="w-full py-6 bg-white shadow-sm sticky top-0 z-40">
+        <h1 className="text-center text-3xl md:text-4xl font-extrabold text-gray-900 tracking-wide">
+          <span className="flex items-center justify-center gap-2">
+            <FaGasPump className="text-green-600" /> PetroGoo
+          </span>
+        </h1>
+      </header>
+
       {/* Hero Section */}
       <section className="flex flex-col md:flex-row items-center justify-between px-8 md:px-24 min-h-screen bg-gradient-to-r from-blue-50 to-blue-100">
-  <div className="flex-1 mb-12 md:mb-0">
-    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-      Fuel at Your <span className="text-blue-600">Doorstep</span>
-    </h1>
-    <p className="text-gray-600 text-base md:text-lg mb-8 max-w-md">
-      Premium fuel delivery service with verified partners. Fast, secure, and convenient fuel delivery right to your location.
-    </p>
-    <div className="space-x-4">
-      <Link
-        to="/login"
-        className="bg-blue-600 text-white px-7 py-3 rounded-md font-semibold shadow hover:bg-blue-700 duration-200"
-      >
-        Login
-      </Link>
-      <Link
-        to="/register"
-        className="bg-green-500 text-white px-7 py-3 rounded-md font-semibold shadow hover:bg-green-600 duration-200"
-      >
-        Sign Up
-      </Link>
-    </div>
-  </div>
-  <div className="flex-1 flex justify-center">
-    {/* Truck image from public/images */}
-    <img
-      src="/images/truck.jpg"
-      alt="Fuel delivery truck"
-      className="w-full max-w-md rounded-2xl shadow-2xl"
-    />
-  </div>
-</section>
+        <div className="flex-1 mb-12 md:mb-0">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+            Fuel at Your <span className="text-blue-600">Doorstep</span>
+          </h2>
+          <p className="text-gray-600 text-base md:text-lg mb-8 max-w-md">
+            Premium fuel delivery service with verified partners. Fast, secure,
+            and convenient fuel delivery right to your location.
+          </p>
 
+          {/* Four Buttons in Grid */}
+          <div className="grid grid-cols-2 gap-4 max-w-sm">
+            <Link
+              to="/login"
+              className="bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold text-center shadow-md hover:from-blue-800 hover:to-blue-600 duration-200"
+            >
+              Customer Login
+            </Link>
+            <Link
+              to="/register"
+              className="bg-gradient-to-r from-green-600 to-green-400 text-white px-6 py-3 rounded-xl font-semibold text-center shadow-md hover:from-green-700 hover:to-green-500 duration-200"
+            >
+              Customer Sign Up
+            </Link>
+            <Link
+              to="/partner-login"
+              className="bg-gradient-to-r from-indigo-700 to-indigo-500 text-white px-6 py-3 rounded-xl font-semibold text-center shadow-md hover:from-indigo-800 hover:to-indigo-600 duration-200"
+            >
+              Partner Login
+            </Link>
+            <Link
+              to="/partner-register"
+              className="bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-xl font-semibold text-center shadow-md hover:from-purple-700 hover:to-purple-500 duration-200"
+            >
+              Partner Sign Up
+            </Link>
+          </div>
+        </div>
 
+        <div className="flex-1 flex justify-center">
+          <img
+            src="/images/truck.jpg"
+            alt="Fuel delivery truck"
+            className="w-full max-w-md rounded-2xl shadow-2xl"
+          />
+        </div>
+      </section>
 
       {/* Why Choose Us */}
       <section className="h-screen bg-gray-50 flex items-center justify-center px-4 md:px-0">
@@ -90,10 +130,8 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 justify-between">
           <div className="flex-1">
             <div className="flex items-center mb-4">
-              <div className="flex items-center mb-4">
-                 <FaGasPump className="text-4xl text-green-500" />
-                    <span className="ml-3 text-3xl font-bold">PetroGoo</span>
-              </div>
+              <FaGasPump className="text-4xl text-green-500" />
+              <span className="ml-3 text-3xl font-bold">PetroGoo</span>
             </div>
             <p className="mb-6 text-gray-400 max-w-sm">
               Revolutionary fuel delivery service bringing premium quality fuel
@@ -115,54 +153,123 @@ export default function Landing() {
             </div>
           </div>
 
+          {/* Quick Links with modal */}
           <div className="flex-1">
-            <h4 className="font-semibold text-lg mb-3 text-white">
-              Quick Links
-            </h4>
+            <h4 className="font-semibold text-lg mb-3 text-white">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link to="/about" className="hover:text-white">About Us</Link></li>
-              <li><Link to="/how-it-works" className="hover:text-white">How It Works</Link></li>
-              <li><Link to="/pricing" className="hover:text-white">Pricing</Link></li>
-              <li><Link to="/service-areas" className="hover:text-white">Service Areas</Link></li>
-              <li><Link to="/partner" className="hover:text-white">Partner With Us</Link></li>
+              {[
+                {
+                  title: "About Us",
+                  text: "Learn more about PetroGoo, our vision, and how we are transforming fuel delivery.",
+                },
+                {
+                  title: "How It Works",
+                  text: "Step-by-step guide on how to request, track, and receive your fuel delivery.",
+                },
+                {
+                  title: "Pricing",
+                  text: "Transparent and competitive pricing designed to give you the best value.",
+                },
+                {
+                  title: "Service Areas",
+                  text: "Check the regions where PetroGoo currently operates and delivers fuel.",
+                },
+                {
+                  title: "Partner With Us",
+                  text: "Join PetroGoo as a partner and expand your business with our platform.",
+                },
+              ].map((item) => (
+                <li key={item.title}>
+                  <button
+                    onClick={() => openModal(item.title, item.text)}
+                    className="hover:text-white text-left w-full"
+                  >
+                    {item.title}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Support with modal */}
           <div className="flex-1">
             <h4 className="font-semibold text-lg mb-3 text-white">Support</h4>
             <ul className="space-y-2">
-              <li><Link to="/help" className="hover:text-white">Help Center</Link></li>
-              <li><Link to="/contact" className="hover:text-white">Contact Us</Link></li>
-              <li><Link to="/terms" className="hover:text-white">Terms of Service</Link></li>
-              <li><Link to="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-              <li><Link to="/safety" className="hover:text-white">Safety Guidelines</Link></li>
+              {[
+                {
+                  title: "Help Center",
+                  text: "Find answers to frequently asked questions and troubleshooting guides.",
+                },
+                {
+                  title: "Contact Us",
+                  text: "Get in touch with our support team for personalized assistance.",
+                },
+                {
+                  title: "Terms of Service",
+                  text: "Review our service terms and conditions for using PetroGoo.",
+                },
+                {
+                  title: "Privacy Policy",
+                  text: "Understand how we collect, use, and protect your personal data.",
+                },
+                {
+                  title: "Safety Guidelines",
+                  text: "Read about the safety measures we follow for secure fuel delivery.",
+                },
+              ].map((item) => (
+                <li key={item.title}>
+                  <button
+                    onClick={() => openModal(item.title, item.text)}
+                    className="hover:text-white text-left w-full"
+                  >
+                    {item.title}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row items-center justify-between">
-  <form className="flex flex-col md:flex-row items-center gap-4 mb-6 md:mb-0">
-    <span className="text-lg font-medium">Stay Updated</span>
-    <input
-      type="email"
-      placeholder="Enter your email"
-      className="py-2 px-4 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-green-400 text-white"
-    />
-    <button
-      type="submit"
-      className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:from-green-500 hover:to-blue-600"
-    >
-      Subscribe
-    </button>
-  </form>
+          <form className="flex flex-col md:flex-row items-center gap-4 mb-6 md:mb-0">
+            <span className="text-lg font-medium">Stay Updated</span>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="py-2 px-4 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-green-400 text-white"
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:from-green-500 hover:to-blue-600"
+            >
+              Subscribe
+            </button>
+          </form>
 
-  {/* Added margin-top on small screens & gap for spacing */}
-  <div className="text-sm text-gray-400 text-center md:text-right mt-4 md:mt-0 md:ml-6">
-    © 2024 PetroGoo. All rights reserved. | Delivering excellence to your doorstep.
-  </div>
-</div>
-
+          <div className="text-sm text-gray-400 text-center md:text-right mt-4 md:mt-0 md:ml-6">
+            © 2024 PetroGoo. All rights reserved. | Delivering excellence to
+            your doorstep.
+          </div>
+        </div>
       </footer>
+
+      {/* Modal */}
+      {modalContent && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+          <div className="bg-white w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5 p-8 rounded-lg shadow-lg relative">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">
+              {modalContent.title}
+            </h2>
+            <p className="text-gray-600 mb-6">{modalContent.text}</p>
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
